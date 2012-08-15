@@ -13,7 +13,7 @@ else
   for file in $LICENSES
   do
     cp $SRC_DIR/binutils/$file binutils/$file
-    if [ "$HOST" == "x86_64-w64-mingw32" ] || [ "$HOST" == "i686-w64-mingw32" ]
+    if [ "$HOST" = "x86_64-w64-mingw32" ] || [ "$HOST" = "i686-w64-mingw32" ]
     then
       cp $SRC_DIR/gdb/$file gdb/$file
     fi
@@ -23,9 +23,9 @@ else
   mkdir -p cloog
   echo "http://www.gnu.org/licenses/lgpl-2.1.html" > cloog/license.txt
 
-  echo "---> Expat"
-  mkdir -p expat
-  cp $SRC_DIR/expat/COPYING expat/COPYING
+  echo "---> ISL"
+  mkdir -p isl
+  echo "http://www.gnu.org/licenses/lgpl-2.1.html" > isl/license.txt
 
   echo "---> GCC"
   mkdir -p gcc
@@ -58,7 +58,7 @@ else
 
   echo "---> MPC"
   mkdir -p mpc
-  cp $SRC_DIR/mpc/COPYING.LIB mpc/COPYING.LIB
+  cp $SRC_DIR/mpc/COPYING.LESSER mpc/COPYING.LESSER
 
   echo "---> MPFR"
   mkdir -p mpfr
@@ -75,11 +75,15 @@ else
 
   if [ "$HOST" != "x86_64-w64-mingw32" ] && [ "$HOST" != "i686-w64-mingw32" ]
   then
-    echo "---> Skipping Make, Python and LLVM/Clang licenses"
+    echo "---> Skipping Make, expat, and Python"
   else
     echo "---> Make"
     mkdir -p make
     cp $SRC_DIR/make/COPYING make/COPYING
+    
+    echo "---> Expat"
+    mkdir -p expat
+    cp $SRC_DIR/expat/COPYING expat/COPYING
 
     echo "---> Python"
     mkdir -p python
