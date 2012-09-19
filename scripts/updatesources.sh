@@ -27,6 +27,8 @@ function update()
     wget -v "$URL/$NAME-$VERSION$EXTENSION" -O "$DOWNLOADS_DIR/$NAME-$VERSION$EXTENSION" > /dev/null 2>&1 || exit 1
     echo "--> Extracting"
     tar -xf "$DOWNLOADS_DIR/$NAME-$VERSION$EXTENSION" || exit 1
+    echo "--> Update src link"
+    ln -fsn "$NAME-$VERSION" "$NAME"
   fi
   echo "--> Up to date"
 }
@@ -38,7 +40,12 @@ update "mpfr"     "$MPFR_VERSION"     ".tar.xz"  "http://www.mpfr.org/mpfr-$MPFR
 update "mpc"      "$MPC_VERSION"      ".tar.gz"  "http://www.multiprecision.org/mpc/download" || exit 1
 update "ppl"      "$PPL_VERSION"      ".tar.bz2" "ftp://ftp.cs.unipr.it/pub/ppl/releases/$PPL_VERSION" || exit 1
 update "cloog"    "$CLOOG_VERSION"    ".tar.gz"  "http://www.bastoul.net/cloog/pages/download/count.php3?url=." || exit 1
+update "isl"      "$ISL_VERSION"      ".tar.bz2"  "ftp://gcc.gnu.org/pub/gcc/infrastructure/" || exit 1
 update "make"     "$MAKE_VERSION"     ".tar.bz2" "http://ftp.gnu.org/gnu/make" || exit 1
+update "binutils" "$BINUTILS_VERSION" ".tar.bz2" "http://ftp.gnu.org/gnu/binutils" || exit 1
+update "gdb"      "$GDB_VERSION"      ".tar.bz2" "http://ftp.gnu.org/gnu/gdb" || exit 1
+update "mingw-w64" "$MINGW64_VERSION" ".tar.gz" "http://downloads.sourceforge.net/mingw-w64" || exit 1
+update "gcc"      "$GCC_VERSION"      ".tar.bz2" "http://ftp.gnu.org/gnu/gcc/gcc-$GCC_VERSION" || exit 1
 
 echo "-> Removing temporary downloads"
 rm -rf "$DOWNLOADS_DIR"
@@ -96,15 +103,35 @@ function vc()
 }
 
 #always trunk
-vc "binutils"         "git" "git://sourceware.org/git/binutils.git" || exit 1
-vc "gdb"              "git" "git://sourceware.org/git/gdb.git" || exit 1
+#vc "binutils"         "git" "git://sourceware.org/git/binutils.git" || exit 1
+#vc "gdb"              "git" "git://sourceware.org/git/gdb.git" || exit 1
 
-vc "mingw-w64"        "svn" "https://mingw-w64.svn.sourceforge.net/svnroot/mingw-w64" || exit 1
-vc "gcc"              "git" "git://gcc.gnu.org/git/gcc.git" || exit 1
-vc "LLVM"             "svn" "http://llvm.org/svn/llvm-project/llvm/trunk" || exit 1
-vc "LLVM/tools/clang" "svn" "http://llvm.org/svn/llvm-project/cfe/trunk" || exit 1
+#vc "mingw-w64"        "svn" "https://mingw-w64.svn.sourceforge.net/svnroot/mingw-w64" || exit 1
+#vc "gcc"              "git" "git://gcc.gnu.org/git/gcc.git" || exit 1
+#vc "LLVM"             "svn" "http://llvm.org/svn/llvm-project/llvm/trunk" || exit 1
+#vc "LLVM/tools/clang" "svn" "http://llvm.org/svn/llvm-project/cfe/trunk" || exit 1
+vc "winpthreads" "svn" "https://mingw-w64.svn.sourceforge.net/svnroot/mingw-w64/experimental/winpthreads" || exit 1
 
 # patches
-#todo
+echo "-> Apply patches"
+PATCHES_DIR="$TOP_DIR/patches"
+
+cd $SOURCE_DIR/binutils
+if [ ! -f patch.marker ]
+then
+  echo "--> Apply binutils patches"
+  git apply -p1 "$PATCHES_DIR/binutils-2.22_mingw.patch.txt" || exit 1
+  echo > patch.marker
+fi
+
+cd $SOURCE_DIR/make
+if [ ! -f patch.marker ]
+then
+  echo "--> Apply make patches"
+  git apply -p1 "$PATCHES_DIR/make-windows-jobserver.patch.txt" || exit 1
+  git apply -p1 "$PATCHES_DIR/make-windows.patch.txt" || exit 1
+  echo > patch.marker
+fi
+echo "--> Applied patches"
 
 cd $TOP_DIR

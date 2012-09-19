@@ -1,0 +1,12 @@
+diff -Naru binutils-2.22-orig/binutils/bucomm.h binutils-2.22/binutils/bucomm.h
+--- binutils-2.22-orig/binutils/bucomm.h        2009-09-02 16:22:31.000000000 +0900
++++ binutils-2.22/binutils/bucomm.h     2012-09-13 17:34:53.000000000 +0900
+@@ -23,6 +23,8 @@
+ #ifndef _BUCOMM_H
+ #define _BUCOMM_H
+
++#include <sys/stat.h>
++
+ /* Return the filename in a static buffer.  */
+ const char *bfd_get_archive_filename (const bfd *);
+
