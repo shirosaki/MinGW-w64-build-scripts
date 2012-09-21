@@ -78,7 +78,7 @@ function vc()
     echo "--> Fetching $NAME sources from $VC"
     case $VC in
     "svn")
-      svn co "$URL" . > /dev/null 2>&1 || exit 1
+      svn co --non-interactive --trust-server-cert "$URL" . > /dev/null 2>&1 || exit 1
       ;;
     "git")
       git clone --depth=1 "$URL" . > /dev/null 2>&1 || exit 1

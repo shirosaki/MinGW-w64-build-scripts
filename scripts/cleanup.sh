@@ -20,7 +20,7 @@ else
   fi
 
   echo "---> Stripping Executables"
-  find . -name \*.exe -exec strip {} \;
+  find . -name \*.exe -exec $HOST-strip {} \;
 
 
   if [ "$TARGET" = "$HOST" ]
@@ -32,7 +32,7 @@ else
   else
     echo "---> No DLL's to copy for cross-compiler"
   fi
-  
+
   cd $BUILD_DIR/cleanup
 fi
 touch cleanup.marker

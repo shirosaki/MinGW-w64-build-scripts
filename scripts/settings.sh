@@ -2,7 +2,10 @@
 set -e
 
 # build options - for my system only, change if you want/need
-export BUILD="x86_64-linux-gnu"
+if [ "$BUILD" = "" ]
+then
+  export BUILD="x86_64-linux-gnu"
+fi
 export MAKE_OPTS="-j4"
 export HOST_CFLAGS="-O2 -march=nocona -mtune=core2"
 #export HOST_CFLAGS="$HOST_CFLAGS -flto"
@@ -13,9 +16,9 @@ then
 fi
 if [ "$HOST_VENDOR" = "apple" ]
 then
-  HOST_CC="$HOST-gcc --sysroot /home/ruben/darwin/MacOSX10.7.sdk"
-  HOST_CXX="$HOST-g++ --sysroot /home/ruben/darwin/MacOSX10.7.sdk"
-  HOST_LDFLAGS="$HOST_LDFLAGS --sysroot /home/ruben/darwin/MacOSX10.7.sdk"
+  HOST_CC="$HOST-gcc"
+  HOST_CXX="$HOST-g++"
+  HOST_LDFLAGS="$HOST_LDFLAGS -L/usr/lib"
 elif [ "$HOST_OS" = "cygwin" ]
 then
   export HOST_CFLAGS="$HOST_CFLAGS -fomit-frame-pointer -momit-leaf-frame-pointer"
@@ -56,4 +59,10 @@ then
   EXTRA_OPTIONS=$EXTRA_OPTIONS
 else
   EXTRA_OPTIONS="$EXTRA_OPTIONS --disable-dw2-exceptions --enable-sjlj-exceptions"
+fi
+
+if [ "$HOST_VENDOR" != "apple" ]
+then
+  EXTRA_OPTIONS="$EXTRA_OPTIONS --enable-static"
+  STATIC_OPTION="-static"
 fi

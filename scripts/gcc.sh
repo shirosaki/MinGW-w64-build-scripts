@@ -10,8 +10,8 @@ else
                             --with-gmp=$PREREQ_INSTALL --with-mpfr=$PREREQ_INSTALL --with-mpc=$PREREQ_INSTALL \
                             --with-ppl=$PREREQ_INSTALL --with-cloog=$PREREQ_INSTALL \
                              --disable-ppl-version-check --disable-cloog-version-check \
-                            --enable-cloog-backend=isl --with-host-libstdcxx='-static -lstdc++ -lm' \
-                            --enable-shared --enable-static --enable-threads=win32 \
+                            --enable-cloog-backend=isl --with-host-libstdcxx=$STATIC_OPTION' -lstdc++ -lm' \
+                            --enable-shared --enable-threads=win32 \
                             --enable-plugins --disable-multilib \
                             --enable-languages=$GCC_LANGUAGES --enable-libgomp \
                             $EXTRA_OPTIONS --enable-fully-dynamic-string --enable-libstdcxx-time \
