@@ -1,2 +1,8 @@
 # temporary backups of text files (KDE)
 *~
+src/*
+prereq/*
+packages/*
+downloads
+*mingw32/
+*mingw64/
