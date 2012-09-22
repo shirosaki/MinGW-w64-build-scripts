@@ -47,8 +47,8 @@ update "gdb"      "$GDB_VERSION"      ".tar.bz2" "http://ftp.gnu.org/gnu/gdb" ||
 update "mingw-w64" "$MINGW64_VERSION" ".tar.gz" "http://downloads.sourceforge.net/mingw-w64" || exit 1
 update "gcc"      "$GCC_VERSION"      ".tar.bz2" "http://ftp.gnu.org/gnu/gcc/gcc-$GCC_VERSION" || exit 1
 
-echo "-> Removing temporary downloads"
-rm -rf "$DOWNLOADS_DIR"
+#echo "-> Removing temporary downloads"
+#rm -rf "$DOWNLOADS_DIR"
 
 # Version control downloads
 # release revisions
