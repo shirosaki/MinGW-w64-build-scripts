@@ -7,7 +7,12 @@ then
   export BUILD="x86_64-linux-gnu"
 fi
 export MAKE_OPTS="-j4"
-export HOST_CFLAGS="-O2 -march=nocona -mtune=core2"
+if [ "$HOST_VENDOR" = "apple" ]
+then
+  export HOST_CFLAGS="-O2 -march=nocona -mtune=core2"
+else
+  export HOST_CFLAGS="-O2 -march=pentium4 -mtune=core2"
+fi
 #export HOST_CFLAGS="$HOST_CFLAGS -flto"
 #export HOST_LDFLAGS="$HOST_LDFLAGS -flto"
 if [ "$HOST" = "i686-w64-mingw32" ] || [ "$HOST" = "i686-pc-cygwin" ]
